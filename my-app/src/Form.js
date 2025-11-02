@@ -76,11 +76,11 @@ setForm({
  <br/>
  <label>Age:</label>  <br/>     
  <input type="number"  className="input" value={form.age} onChange={(event)=>{
-setForm(prevForm => ({
-  ...prevForm,
+setForm((prevForm) =>{
+return { ...prevForm,
   age: event.target.value,
-  isDisabled: !(prevForm.Name.trim() !== "" && prevForm.phone.trim() !== "" && event.target.value !== "")
-}));
+  isDisabled: !(prevForm.Name.trim() !== "" && prevForm.phone.trim() !== "" && event.target.value !== "") }
+});
 
  }}/>
  <br/>
