@@ -2,7 +2,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 const Form = () => {
  
-    const [form,setForm]=useState({ Name:"", phone:"", age:null,
+    const [form,setForm]=useState({ Name:"", phone:"", age:"",
       isEmployee:false  , selectedOption:"less than 500$" ,isDisabled:true })
     const handleSubmit=(e)=>{
 e.preventDefault();
@@ -16,6 +16,28 @@ if(!form.isEmployee){
       }); 
       return;
 }
+const age = parseInt(form.age); 
+if (isNaN(age) || age < 18 || age > 100) {
+  Swal.fire({
+    title: 'Invalid Age',
+    text: 'Age must be between 18 and 100 years old.',
+    icon: 'error',
+    confirmButtonText: 'OK'
+  });
+  return;
+}
+
+const phoneDigits = form.phone.replace(/\D/g, "");
+if (phoneDigits.length < 10 || phoneDigits.length > 12) {
+  Swal.fire({
+    title: 'Invalid Phone Number',
+    text: 'Phone number must be between 10 and 12 digits.',
+    icon: 'error',
+    confirmButtonText: 'OK'
+  });
+  return;
+}
+
 
 Swal.fire({
     title: 'Success!',
@@ -35,10 +57,7 @@ setForm({
     };
   
 
-   const handelbutton=()=>{
-    setForm({...form,isDisabled:false});
-
-   }
+ 
     return (
       <div className="Form">
 <form onSubmit={handleSubmit}>
@@ -58,9 +77,12 @@ setForm({
  <label>Age:</label>  <br/>     
  <input type="number"  className="input" value={form.age} onChange={(event)=>{
      const newAge = event.target.value;
-     setForm({ ...form, age: newAge });
-    if (form.Name.trim() !== "" && form.phone.trim() !== "" && newAge !== "") 
-        handelbutton();
+setForm(prevForm => ({
+          ...prevForm,
+          age: newAge,
+          isDisabled: !(prevForm.Name.trim() !== "" && prevForm.phone.trim() !== "" && newAge !== "")
+      }));
+     
  }}/>
  <br/>
  <label>Are you an employee?</label>  <br/>     
